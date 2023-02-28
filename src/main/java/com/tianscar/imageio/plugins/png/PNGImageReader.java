@@ -58,6 +58,8 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import java.io.ByteArrayOutputStream;
 
+import static com.tianscar.imageio.plugins.png.PNG.*;
+
 class PNGImageDataEnumeration implements Enumeration<InputStream> {
 
     boolean firstTime = true;
@@ -149,12 +151,6 @@ public class PNGImageReader extends ImageReader {
     static final int fcTL_TYPE = 0x6663544C;
     static final int fdAT_TYPE = 0x66644154;
 
-    static final int PNG_COLOR_GRAY = 0;
-    static final int PNG_COLOR_RGB = 2;
-    static final int PNG_COLOR_PALETTE = 3;
-    static final int PNG_COLOR_GRAY_ALPHA = 4;
-    static final int PNG_COLOR_RGB_ALPHA = 6;
-
     // The number of bands by PNG color type
     static final int[] inputBandsForColorType = {
          1, // gray
@@ -165,12 +161,6 @@ public class PNGImageReader extends ImageReader {
         -1, // unused
          4  // rgb + alpha
     };
-
-    static final int PNG_FILTER_NONE = 0;
-    static final int PNG_FILTER_SUB = 1;
-    static final int PNG_FILTER_UP = 2;
-    static final int PNG_FILTER_AVERAGE = 3;
-    static final int PNG_FILTER_PAETH = 4;
 
     static final int[] adam7XOffset = { 0, 4, 0, 2, 0, 1, 0 };
     static final int[] adam7YOffset = { 0, 0, 4, 0, 2, 0, 1 };
