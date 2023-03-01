@@ -80,7 +80,7 @@ class PNGImageDataEnumeration implements Enumeration<InputStream> {
     public InputStream nextElement() {
         try {
             firstTime = false;
-            ImageInputStream iis = new SubImageInputStream(stream, length);
+            ImageInputStream iis = new SubImageInputStream(stream, length - (fdAT ? 4 : 0));
             return new InputStreamAdapter(iis);
         } catch (IOException e) {
             return null;
@@ -92,19 +92,15 @@ class PNGImageDataEnumeration implements Enumeration<InputStream> {
         if (firstTime) {
             return true;
         }
-
         try {
             int crc = stream.readInt();
             this.length = stream.readInt();
             int type = stream.readInt();
-            if (fdAT && (type == PNGImageReader.fcTL_TYPE || type == PNGImageReader.fdAT_TYPE)) {
-                return true;
+            if (fdAT) {
+                stream.readInt();
+                return type == PNGImageReader.fdAT_TYPE;
             }
-            else if (type == PNGImageReader.IDAT_TYPE) {
-                return true;
-            } else {
-                return false;
-            }
+            else return type == PNGImageReader.IDAT_TYPE;
         } catch (IOException e) {
             return false;
         }
@@ -181,7 +177,7 @@ public class PNGImageReader extends ImageReader {
     long imageStartPosition = -1L;
     Map<Integer, PNGMetadata> frameMetadata = new HashMap<>();
     Map<Integer, Long> frameImageStartPositions = new HashMap<>();
-    int nextSequenceNumber = 0;
+    int nextImageIndex = 0;
 
     Rectangle sourceRegion = null;
     int sourceXSubsampling = -1;
@@ -349,8 +345,8 @@ public class PNGImageReader extends ImageReader {
     }
 
     private void parse_fcTL_chunk() throws IOException {
-        if (!frameMetadata.containsKey(nextSequenceNumber)) frameMetadata.put(nextSequenceNumber, (PNGMetadata) metadata.clone());
-        PNGMetadata metadata = frameMetadata.get(nextSequenceNumber);
+        if (!frameMetadata.containsKey(nextImageIndex)) frameMetadata.put(nextImageIndex, (PNGMetadata) metadata.clone());
+        PNGMetadata metadata = frameMetadata.get(nextImageIndex);
         if (metadata.fcTL_present) {
             processWarningOccurred(
 "An APNG image frame may not contain more than one fcTL chunk.\n" +
@@ -369,7 +365,7 @@ public class PNGImageReader extends ImageReader {
         metadata.fcTL_blend_op = stream.readUnsignedByte();
 
         metadata.fcTL_present = true;
-        nextSequenceNumber++;
+        nextImageIndex ++;
     }
 
     private void parse_PLTE_chunk(int chunkLength) throws IOException {
@@ -804,7 +800,7 @@ public class PNGImageReader extends ImageReader {
                     else if (isAnimated && chunkType == fdAT_TYPE) {
                         int seqNumber = stream.readInt();
                         stream.skipBytes(-12);
-                        int index = nextSequenceNumber - 1;
+                        int index = nextImageIndex - 1;
                         if (!frameImageStartPositions.containsKey(index)) {
                             if (!frameMetadata.containsKey(index)) throw new IIOException("Required fcTL chunk missing");
                             PNGMetadata metadata = frameMetadata.get(index);
@@ -894,7 +890,7 @@ public class PNGImageReader extends ImageReader {
                                 + " missing");
                     }
 
-                    int index = nextSequenceNumber - 1;
+                    int index = nextImageIndex - 1;
                     if (!frameImageStartPositions.containsKey(index)) {
                         if (!frameMetadata.containsKey(index)) throw new IIOException("Required fcTL chunk missing");
                         PNGMetadata metadata = frameMetadata.get(index);
@@ -2035,7 +2031,7 @@ public class PNGImageReader extends ImageReader {
         frameImageStartPositions.clear();
         frameMetadata.clear();
         isAnimated = false;
-        nextSequenceNumber = 0;
+        nextImageIndex = 0;
         animContainsIDAT = false;
     }
 }

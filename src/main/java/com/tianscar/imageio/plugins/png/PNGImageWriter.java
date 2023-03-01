@@ -175,7 +175,7 @@ abstract class PNGImageOutputStream extends ImageOutputStreamImpl {
 
     protected abstract void startChunk() throws IOException;
 
-    private void finishChunk() throws IOException {
+    protected void finishChunk() throws IOException {
         // Write CRC
         stream.writeInt(crc.getValue());
 
@@ -307,7 +307,7 @@ final class PNGfdATOutputStream extends PNGImageOutputStream {
             (byte)'f', (byte)'d', (byte)'A', (byte)'T'
     };
 
-    private final int seqNumber;
+    public int seqNumber;
     private final byte[] seqNumberBuf = new byte[4];
 
     PNGfdATOutputStream(ImageOutputStream stream, int chunkLength, int deflaterLevel, int seqNumber) throws IOException {
@@ -333,8 +333,9 @@ final class PNGfdATOutputStream extends PNGImageOutputStream {
 
         crc.update(seqNumberBuf, 0, 4);
         stream.writeInt(seqNumber);
+        seqNumber ++;
 
-        this.bytesRemaining = chunkLength - 4;
+        this.bytesRemaining = chunkLength;
     }
 
 }
@@ -554,19 +555,19 @@ public final class PNGImageWriter extends ImageWriter {
                 return;
             }
 
-            if (colorType == PNGImageReader.PNG_COLOR_GRAY ||
-                colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
+            if (colorType == PNG.PNG_COLOR_GRAY ||
+                colorType == PNG.PNG_COLOR_GRAY_ALPHA) {
                 cs.writeByte(metadata.sBIT_grayBits);
-            } else if (colorType == PNGImageReader.PNG_COLOR_RGB ||
-                       colorType == PNGImageReader.PNG_COLOR_PALETTE ||
-                       colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) {
+            } else if (colorType == PNG.PNG_COLOR_RGB ||
+                       colorType == PNG.PNG_COLOR_PALETTE ||
+                       colorType == PNG.PNG_COLOR_RGB_ALPHA) {
                 cs.writeByte(metadata.sBIT_redBits);
                 cs.writeByte(metadata.sBIT_greenBits);
                 cs.writeByte(metadata.sBIT_blueBits);
             }
 
-            if (colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA ||
-                colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) {
+            if (colorType == PNG.PNG_COLOR_GRAY_ALPHA ||
+                colorType == PNG.PNG_COLOR_RGB_ALPHA) {
                 cs.writeByte(metadata.sBIT_alphaBits);
             }
             cs.finish();
@@ -583,8 +584,8 @@ public final class PNGImageWriter extends ImageWriter {
 
     private void write_PLTE() throws IOException {
         if (metadata.PLTE_present) {
-            if (metadata.IHDR_colorType == PNGImageReader.PNG_COLOR_GRAY ||
-              metadata.IHDR_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
+            if (metadata.IHDR_colorType == PNG.PNG_COLOR_GRAY ||
+              metadata.IHDR_colorType == PNG.PNG_COLOR_GRAY_ALPHA) {
                 // PLTE cannot occur in a gray image
 
                 processWarningOccurred(0,
@@ -634,8 +635,8 @@ public final class PNGImageWriter extends ImageWriter {
             int chunkRed = metadata.tRNS_red;
             int chunkGreen = metadata.tRNS_green;
             int chunkBlue = metadata.tRNS_blue;
-            if (colorType == PNGImageReader.PNG_COLOR_RGB &&
-                chunkType == PNGImageReader.PNG_COLOR_GRAY) {
+            if (colorType == PNG.PNG_COLOR_RGB &&
+                chunkType == PNG.PNG_COLOR_GRAY) {
                 chunkType = colorType;
                 chunkRed = chunkGreen = chunkBlue =
                     metadata.tRNS_gray;
@@ -648,14 +649,14 @@ public final class PNGImageWriter extends ImageWriter {
                 return;
             }
 
-            if (colorType == PNGImageReader.PNG_COLOR_PALETTE) {
+            if (colorType == PNG.PNG_COLOR_PALETTE) {
                 if (!metadata.PLTE_present) {
                     throw new IIOException("tRNS chunk without PLTE chunk!");
                 }
                 cs.write(metadata.tRNS_alpha);
-            } else if (colorType == PNGImageReader.PNG_COLOR_GRAY) {
+            } else if (colorType == PNG.PNG_COLOR_GRAY) {
                 cs.writeShort(metadata.tRNS_gray);
-            } else if (colorType == PNGImageReader.PNG_COLOR_RGB) {
+            } else if (colorType == PNG.PNG_COLOR_RGB) {
                 cs.writeShort(chunkRed);
                 cs.writeShort(chunkGreen);
                 cs.writeShort(chunkBlue);
@@ -677,8 +678,8 @@ public final class PNGImageWriter extends ImageWriter {
             int chunkBlue = metadata.bKGD_blue;
             // Special case: image is RGB(A) and chunk is Gray
             // Promote chunk contents to RGB
-            if (colorType == PNGImageReader.PNG_COLOR_RGB &&
-                chunkType == PNGImageReader.PNG_COLOR_GRAY) {
+            if (colorType == PNG.PNG_COLOR_RGB &&
+                chunkType == PNG.PNG_COLOR_GRAY) {
                 // Make a gray bKGD chunk look like RGB
                 chunkType = colorType;
                 chunkRed = chunkGreen = chunkBlue =
@@ -693,13 +694,13 @@ public final class PNGImageWriter extends ImageWriter {
                 return;
             }
 
-            if (colorType == PNGImageReader.PNG_COLOR_PALETTE) {
+            if (colorType == PNG.PNG_COLOR_PALETTE) {
                 cs.writeByte(metadata.bKGD_index);
-            } else if (colorType == PNGImageReader.PNG_COLOR_GRAY ||
-                       colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
+            } else if (colorType == PNG.PNG_COLOR_GRAY ||
+                       colorType == PNG.PNG_COLOR_GRAY_ALPHA) {
                 cs.writeShort(metadata.bKGD_gray);
-            } else { // colorType == PNGImageReader.PNG_COLOR_RGB ||
-                     // colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA
+            } else { // colorType == PNG.PNG_COLOR_RGB ||
+                     // colorType == PNG.PNG_COLOR_RGB_ALPHA
                 cs.writeShort(chunkRed);
                 cs.writeShort(chunkGreen);
                 cs.writeShort(chunkBlue);
@@ -926,7 +927,7 @@ public final class PNGImageWriter extends ImageWriter {
         }
 
         IndexColorModel icm_gray_alpha = null;
-        if (metadata.IHDR_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA &&
+        if (metadata.IHDR_colorType == PNG.PNG_COLOR_GRAY_ALPHA &&
             image.getColorModel() instanceof IndexColorModel)
         {
             // reserve space for alpha samples
@@ -1184,7 +1185,7 @@ public final class PNGImageWriter extends ImageWriter {
     private void write_fdAT(RenderedImage image, int deflaterLevel, int currentSequence)
             throws IOException
     {
-        PNGfdATOutputStream fos = new PNGfdATOutputStream(stream, 32768 + 4,
+        PNGfdATOutputStream fos = new PNGfdATOutputStream(stream, 32768,
                 deflaterLevel, currentSequence);
         try {
             if (metadata.IHDR_interlaceMethod == 1) {
@@ -1203,6 +1204,7 @@ public final class PNGImageWriter extends ImageWriter {
             }
         } finally {
             fos.finish();
+            nextSequenceNumber = fos.seqNumber;
         }
     }
 
@@ -1390,10 +1392,11 @@ public final class PNGImageWriter extends ImageWriter {
                 }
                 metadata.fcTL_present = true;
                 metadata.fcTL_sequence_number = nextSequenceNumber;
+                metadata.fcTL_width = im.getWidth();
+                metadata.fcTL_height = im.getHeight();
                 nextSequenceNumber ++;
                 metadata.fdAT_present = true;
                 metadata.fdAT_sequence_number = nextSequenceNumber;
-                nextSequenceNumber ++;
                 write_fcTL(metadata);
                 write_fdAT(im, deflaterLevel, metadata.fdAT_sequence_number);
 
@@ -1440,6 +1443,8 @@ public final class PNGImageWriter extends ImageWriter {
                     }
                     metadata.fcTL_present = true;
                     metadata.fcTL_sequence_number = nextSequenceNumber;
+                    metadata.fcTL_width = im.getWidth();
+                    metadata.fcTL_height = im.getHeight();
                     nextSequenceNumber ++;
                     write_fcTL(metadata);
                     write_IDAT(im, deflaterLevel);

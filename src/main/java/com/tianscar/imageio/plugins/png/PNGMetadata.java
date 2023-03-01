@@ -393,7 +393,7 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
             // if the color type has not been set previously
             boolean isGray = false;
             if (!IHDR_present ||
-                (IHDR_colorType != PNGImageReader.PNG_COLOR_PALETTE)) {
+                (IHDR_colorType != PNG.PNG_COLOR_PALETTE)) {
                 isGray = true;
                 int scale = 255/((1 << IHDR_bitDepth) - 1);
                 for (int i = 0; i < size; i++) {
@@ -426,11 +426,11 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
              */
 
             if (isGray && hasAlpha && (bitDepth == 8 || bitDepth == 16)) {
-                IHDR_colorType = PNGImageReader.PNG_COLOR_GRAY_ALPHA;
+                IHDR_colorType = PNG.PNG_COLOR_GRAY_ALPHA;
             } else if (isGray && !hasAlpha) {
-                IHDR_colorType = PNGImageReader.PNG_COLOR_GRAY;
+                IHDR_colorType = PNG.PNG_COLOR_GRAY;
             } else {
-                IHDR_colorType = PNGImageReader.PNG_COLOR_PALETTE;
+                IHDR_colorType = PNG.PNG_COLOR_PALETTE;
                 PLTE_present = true;
                 PLTE_order = null;
                 PLTE_red = reds.clone();
@@ -439,7 +439,7 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
 
                 if (hasAlpha) {
                     tRNS_present = true;
-                    tRNS_colorType = PNGImageReader.PNG_COLOR_PALETTE;
+                    tRNS_colorType = PNG.PNG_COLOR_PALETTE;
 
                     PLTE_order = new int[alpha.length];
 
@@ -494,13 +494,13 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
             }
         } else {
             if (numBands == 1) {
-                IHDR_colorType = PNGImageReader.PNG_COLOR_GRAY;
+                IHDR_colorType = PNG.PNG_COLOR_GRAY;
             } else if (numBands == 2) {
-                IHDR_colorType = PNGImageReader.PNG_COLOR_GRAY_ALPHA;
+                IHDR_colorType = PNG.PNG_COLOR_GRAY_ALPHA;
             } else if (numBands == 3) {
-                IHDR_colorType = PNGImageReader.PNG_COLOR_RGB;
+                IHDR_colorType = PNG.PNG_COLOR_RGB;
             } else if (numBands == 4) {
-                IHDR_colorType = PNGImageReader.PNG_COLOR_RGB_ALPHA;
+                IHDR_colorType = PNG.PNG_COLOR_RGB_ALPHA;
             } else {
                 throw new RuntimeException("Number of bands not 1-4!");
             }
@@ -599,13 +599,13 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
         if (bKGD_present) {
             IIOMetadataNode bKGD_node = new IIOMetadataNode("bKGD");
 
-            if (bKGD_colorType == PNGImageReader.PNG_COLOR_PALETTE) {
+            if (bKGD_colorType == PNG.PNG_COLOR_PALETTE) {
                 node = new IIOMetadataNode("bKGD_Palette");
                 node.setAttribute("index", Integer.toString(bKGD_index));
-            } else if (bKGD_colorType == PNGImageReader.PNG_COLOR_GRAY) {
+            } else if (bKGD_colorType == PNG.PNG_COLOR_GRAY) {
                 node = new IIOMetadataNode("bKGD_Grayscale");
                 node.setAttribute("gray", Integer.toString(bKGD_gray));
-            } else if (bKGD_colorType == PNGImageReader.PNG_COLOR_RGB) {
+            } else if (bKGD_colorType == PNG.PNG_COLOR_RGB) {
                 node = new IIOMetadataNode("bKGD_RGB");
                 node.setAttribute("red", Integer.toString(bKGD_red));
                 node.setAttribute("green", Integer.toString(bKGD_green));
@@ -735,17 +735,17 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
         if (sBIT_present) {
             IIOMetadataNode sBIT_node = new IIOMetadataNode("sBIT");
 
-            if (sBIT_colorType == PNGImageReader.PNG_COLOR_GRAY) {
+            if (sBIT_colorType == PNG.PNG_COLOR_GRAY) {
                 node = new IIOMetadataNode("sBIT_Grayscale");
                 node.setAttribute("gray",
                                   Integer.toString(sBIT_grayBits));
-            } else if (sBIT_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
+            } else if (sBIT_colorType == PNG.PNG_COLOR_GRAY_ALPHA) {
                 node = new IIOMetadataNode("sBIT_GrayAlpha");
                 node.setAttribute("gray",
                                   Integer.toString(sBIT_grayBits));
                 node.setAttribute("alpha",
                                   Integer.toString(sBIT_alphaBits));
-            } else if (sBIT_colorType == PNGImageReader.PNG_COLOR_RGB) {
+            } else if (sBIT_colorType == PNG.PNG_COLOR_RGB) {
                 node = new IIOMetadataNode("sBIT_RGB");
                 node.setAttribute("red",
                                   Integer.toString(sBIT_redBits));
@@ -753,7 +753,7 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                                   Integer.toString(sBIT_greenBits));
                 node.setAttribute("blue",
                                   Integer.toString(sBIT_blueBits));
-            } else if (sBIT_colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) {
+            } else if (sBIT_colorType == PNG.PNG_COLOR_RGB_ALPHA) {
                 node = new IIOMetadataNode("sBIT_RGBAlpha");
                 node.setAttribute("red",
                                   Integer.toString(sBIT_redBits));
@@ -763,7 +763,7 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                                   Integer.toString(sBIT_blueBits));
                 node.setAttribute("alpha",
                                   Integer.toString(sBIT_alphaBits));
-            } else if (sBIT_colorType == PNGImageReader.PNG_COLOR_PALETTE) {
+            } else if (sBIT_colorType == PNG.PNG_COLOR_PALETTE) {
                 node = new IIOMetadataNode("sBIT_Palette");
                 node.setAttribute("red",
                                   Integer.toString(sBIT_redBits));
@@ -841,7 +841,7 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
         if (tRNS_present) {
             IIOMetadataNode tRNS_node = new IIOMetadataNode("tRNS");
 
-            if (tRNS_colorType == PNGImageReader.PNG_COLOR_PALETTE) {
+            if (tRNS_colorType == PNG.PNG_COLOR_PALETTE) {
                 node = new IIOMetadataNode("tRNS_Palette");
 
                 for (int i = 0; i < tRNS_alpha.length; i++) {
@@ -852,10 +852,10 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                                        Integer.toString(tRNS_alpha[i] & 0xff));
                     node.appendChild(entry);
                 }
-            } else if (tRNS_colorType == PNGImageReader.PNG_COLOR_GRAY) {
+            } else if (tRNS_colorType == PNG.PNG_COLOR_GRAY) {
                 node = new IIOMetadataNode("tRNS_Grayscale");
                 node.setAttribute("gray", Integer.toString(tRNS_gray));
-            } else if (tRNS_colorType == PNGImageReader.PNG_COLOR_RGB) {
+            } else if (tRNS_colorType == PNG.PNG_COLOR_RGB) {
                 node = new IIOMetadataNode("tRNS_RGB");
                 node.setAttribute("red", Integer.toString(tRNS_red));
                 node.setAttribute("green", Integer.toString(tRNS_green));
@@ -944,7 +944,7 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
         // Determine number of channels
         // Be careful about palette color with transparency
         int numChannels = IHDR_numChannels[IHDR_colorType];
-        if (IHDR_colorType == PNGImageReader.PNG_COLOR_PALETTE &&
+        if (IHDR_colorType == PNG.PNG_COLOR_PALETTE &&
             tRNS_present && tRNS_colorType == IHDR_colorType) {
             numChannels = 4;
         }
@@ -975,7 +975,7 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
 
         if (PLTE_present) {
             boolean hasAlpha = tRNS_present &&
-                (tRNS_colorType == PNGImageReader.PNG_COLOR_PALETTE);
+                (tRNS_colorType == PNG.PNG_COLOR_PALETTE);
 
             node = new IIOMetadataNode("Palette");
             for (int i = 0; i < PLTE_red.length; i++) {
@@ -999,14 +999,14 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
         }
 
         if (bKGD_present) {
-            if (bKGD_colorType == PNGImageReader.PNG_COLOR_PALETTE) {
+            if (bKGD_colorType == PNG.PNG_COLOR_PALETTE) {
                 node = new IIOMetadataNode("BackgroundIndex");
                 node.setAttribute("value", Integer.toString(bKGD_index));
             } else {
                 node = new IIOMetadataNode("BackgroundColor");
                 int r, g, b;
 
-                if (bKGD_colorType == PNGImageReader.PNG_COLOR_GRAY) {
+                if (bKGD_colorType == PNG.PNG_COLOR_GRAY) {
                     r = g = b = bKGD_gray;
                 } else {
                     r = bKGD_red;
@@ -1066,7 +1066,7 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
 
         node = new IIOMetadataNode("SampleFormat");
         node.setAttribute("value",
-                          IHDR_colorType == PNGImageReader.PNG_COLOR_PALETTE ?
+                          IHDR_colorType == PNG.PNG_COLOR_PALETTE ?
                           "Index" : "UnsignedIntegral");
         data_node.appendChild(node);
 
@@ -1078,18 +1078,18 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
         if (sBIT_present) {
             node = new IIOMetadataNode("SignificantBitsPerSample");
             String sbits;
-            if (sBIT_colorType == PNGImageReader.PNG_COLOR_GRAY ||
-                sBIT_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
+            if (sBIT_colorType == PNG.PNG_COLOR_GRAY ||
+                sBIT_colorType == PNG.PNG_COLOR_GRAY_ALPHA) {
                 sbits = Integer.toString(sBIT_grayBits);
-            } else { // sBIT_colorType == PNGImageReader.PNG_COLOR_RGB ||
-                     // sBIT_colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA
+            } else { // sBIT_colorType == PNG.PNG_COLOR_RGB ||
+                     // sBIT_colorType == PNG.PNG_COLOR_RGB_ALPHA
                 sbits = Integer.toString(sBIT_redBits) + " " +
                     Integer.toString(sBIT_greenBits) + " " +
                     Integer.toString(sBIT_blueBits);
             }
 
-            if (sBIT_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA ||
-                sBIT_colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) {
+            if (sBIT_colorType == PNG.PNG_COLOR_GRAY_ALPHA ||
+                sBIT_colorType == PNG.PNG_COLOR_RGB_ALPHA) {
                 sbits += " " + Integer.toString(sBIT_alphaBits);
             }
 
@@ -1235,9 +1235,9 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
 
         node = new IIOMetadataNode("Alpha");
         boolean hasAlpha =
-            (IHDR_colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) ||
-            (IHDR_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) ||
-            (IHDR_colorType == PNGImageReader.PNG_COLOR_PALETTE &&
+            (IHDR_colorType == PNG.PNG_COLOR_RGB_ALPHA) ||
+            (IHDR_colorType == PNG.PNG_COLOR_GRAY_ALPHA) ||
+            (IHDR_colorType == PNG.PNG_COLOR_PALETTE &&
              tRNS_present &&
              (tRNS_colorType == IHDR_colorType) &&
              (tRNS_alpha != null));
@@ -1246,12 +1246,12 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
 
         if (tRNS_present) {
             node = new IIOMetadataNode("TransparentColor");
-            if (tRNS_colorType == PNGImageReader.PNG_COLOR_RGB) {
+            if (tRNS_colorType == PNG.PNG_COLOR_RGB) {
                 node.setAttribute("value",
                                   Integer.toString(tRNS_red) + " " +
                                   Integer.toString(tRNS_green) + " " +
                                   Integer.toString(tRNS_blue));
-            } else if (tRNS_colorType == PNGImageReader.PNG_COLOR_GRAY) {
+            } else if (tRNS_colorType == PNG.PNG_COLOR_GRAY) {
                 node.setAttribute("value", Integer.toString(tRNS_gray));
             }
             transparency_node.appendChild(node);
@@ -1567,15 +1567,15 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                 String bKGD_name = bKGD_node.getNodeName();
                 if (bKGD_name.equals("bKGD_Palette")) {
                     bKGD_index = getIntAttribute(bKGD_node, "index");
-                    bKGD_colorType = PNGImageReader.PNG_COLOR_PALETTE;
+                    bKGD_colorType = PNG.PNG_COLOR_PALETTE;
                 } else if (bKGD_name.equals("bKGD_Grayscale")) {
                     bKGD_gray = getIntAttribute(bKGD_node, "gray");
-                    bKGD_colorType = PNGImageReader.PNG_COLOR_GRAY;
+                    bKGD_colorType = PNG.PNG_COLOR_GRAY;
                 } else if (bKGD_name.equals("bKGD_RGB")) {
                     bKGD_red = getIntAttribute(bKGD_node, "red");
                     bKGD_green = getIntAttribute(bKGD_node, "green");
                     bKGD_blue = getIntAttribute(bKGD_node, "blue");
-                    bKGD_colorType = PNGImageReader.PNG_COLOR_RGB;
+                    bKGD_colorType = PNG.PNG_COLOR_RGB;
                 } else {
                     fatal(node, "Bad child of a bKGD node!");
                 }
@@ -1730,27 +1730,27 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                 String sBIT_name = sBIT_node.getNodeName();
                 if (sBIT_name.equals("sBIT_Grayscale")) {
                     sBIT_grayBits = getIntAttribute(sBIT_node, "gray");
-                    sBIT_colorType = PNGImageReader.PNG_COLOR_GRAY;
+                    sBIT_colorType = PNG.PNG_COLOR_GRAY;
                 } else if (sBIT_name.equals("sBIT_GrayAlpha")) {
                     sBIT_grayBits = getIntAttribute(sBIT_node, "gray");
                     sBIT_alphaBits = getIntAttribute(sBIT_node, "alpha");
-                    sBIT_colorType = PNGImageReader.PNG_COLOR_GRAY_ALPHA;
+                    sBIT_colorType = PNG.PNG_COLOR_GRAY_ALPHA;
                 } else if (sBIT_name.equals("sBIT_RGB")) {
                     sBIT_redBits = getIntAttribute(sBIT_node, "red");
                     sBIT_greenBits = getIntAttribute(sBIT_node, "green");
                     sBIT_blueBits = getIntAttribute(sBIT_node, "blue");
-                    sBIT_colorType = PNGImageReader.PNG_COLOR_RGB;
+                    sBIT_colorType = PNG.PNG_COLOR_RGB;
                 } else if (sBIT_name.equals("sBIT_RGBAlpha")) {
                     sBIT_redBits = getIntAttribute(sBIT_node, "red");
                     sBIT_greenBits = getIntAttribute(sBIT_node, "green");
                     sBIT_blueBits = getIntAttribute(sBIT_node, "blue");
                     sBIT_alphaBits = getIntAttribute(sBIT_node, "alpha");
-                    sBIT_colorType = PNGImageReader.PNG_COLOR_RGB_ALPHA;
+                    sBIT_colorType = PNG.PNG_COLOR_RGB_ALPHA;
                 } else if (sBIT_name.equals("sBIT_Palette")) {
                     sBIT_redBits = getIntAttribute(sBIT_node, "red");
                     sBIT_greenBits = getIntAttribute(sBIT_node, "green");
                     sBIT_blueBits = getIntAttribute(sBIT_node, "blue");
-                    sBIT_colorType = PNGImageReader.PNG_COLOR_PALETTE;
+                    sBIT_colorType = PNG.PNG_COLOR_PALETTE;
                 } else {
                     fatal(node, "Bad child of an sBIT node!");
                 }
@@ -1891,16 +1891,16 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
 
                     int numEntries = maxindex + 1;
                     tRNS_alpha = new byte[numEntries];
-                    tRNS_colorType = PNGImageReader.PNG_COLOR_PALETTE;
+                    tRNS_colorType = PNG.PNG_COLOR_PALETTE;
                     System.arraycopy(alpha, 0, tRNS_alpha, 0, numEntries);
                 } else if (tRNS_name.equals("tRNS_Grayscale")) {
                     tRNS_gray = getIntAttribute(tRNS_node, "gray");
-                    tRNS_colorType = PNGImageReader.PNG_COLOR_GRAY;
+                    tRNS_colorType = PNG.PNG_COLOR_GRAY;
                 } else if (tRNS_name.equals("tRNS_RGB")) {
                     tRNS_red = getIntAttribute(tRNS_node, "red");
                     tRNS_green = getIntAttribute(tRNS_node, "green");
                     tRNS_blue = getIntAttribute(tRNS_node, "blue");
-                    tRNS_colorType = PNGImageReader.PNG_COLOR_RGB;
+                    tRNS_colorType = PNG.PNG_COLOR_RGB;
                 } else {
                     fatal(node, "Bad child of a tRNS node!");
                 }
@@ -2128,17 +2128,17 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                         PLTE_present = true;
                     } else if (childName.equals("BackgroundIndex")) {
                         bKGD_present = true;
-                        bKGD_colorType = PNGImageReader.PNG_COLOR_PALETTE;
+                        bKGD_colorType = PNG.PNG_COLOR_PALETTE;
                         bKGD_index = getIntAttribute(child, "value");
                     } else if (childName.equals("BackgroundColor")) {
                         int red = getIntAttribute(child, "red");
                         int green = getIntAttribute(child, "green");
                         int blue = getIntAttribute(child, "blue");
                         if (red == green && red == blue) {
-                            bKGD_colorType = PNGImageReader.PNG_COLOR_GRAY;
+                            bKGD_colorType = PNG.PNG_COLOR_GRAY;
                             bKGD_gray = red;
                         } else {
-                            bKGD_colorType = PNGImageReader.PNG_COLOR_RGB;
+                            bKGD_colorType = PNG.PNG_COLOR_RGB;
                             bKGD_red = red;
                             bKGD_green = green;
                             bKGD_blue = blue;
@@ -2194,21 +2194,21 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                         StringTokenizer t = new StringTokenizer(s);
                         int numTokens = t.countTokens();
                         if (numTokens == 1) {
-                            sBIT_colorType = PNGImageReader.PNG_COLOR_GRAY;
+                            sBIT_colorType = PNG.PNG_COLOR_GRAY;
                             sBIT_grayBits = Integer.parseInt(t.nextToken());
                         } else if (numTokens == 2) {
                             sBIT_colorType =
-                              PNGImageReader.PNG_COLOR_GRAY_ALPHA;
+                              PNG.PNG_COLOR_GRAY_ALPHA;
                             sBIT_grayBits = Integer.parseInt(t.nextToken());
                             sBIT_alphaBits = Integer.parseInt(t.nextToken());
                         } else if (numTokens == 3) {
-                            sBIT_colorType = PNGImageReader.PNG_COLOR_RGB;
+                            sBIT_colorType = PNG.PNG_COLOR_RGB;
                             sBIT_redBits = Integer.parseInt(t.nextToken());
                             sBIT_greenBits = Integer.parseInt(t.nextToken());
                             sBIT_blueBits = Integer.parseInt(t.nextToken());
                         } else if (numTokens == 4) {
                             sBIT_colorType =
-                              PNGImageReader.PNG_COLOR_RGB_ALPHA;
+                              PNG.PNG_COLOR_RGB_ALPHA;
                             sBIT_redBits = Integer.parseInt(t.nextToken());
                             sBIT_greenBits = Integer.parseInt(t.nextToken());
                             sBIT_blueBits = Integer.parseInt(t.nextToken());
@@ -2526,8 +2526,8 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
 
     boolean hasTransparentColor() {
         return tRNS_present &&
-               (tRNS_colorType == PNGImageReader.PNG_COLOR_RGB ||
-               tRNS_colorType == PNGImageReader.PNG_COLOR_GRAY);
+               (tRNS_colorType == PNG.PNG_COLOR_RGB ||
+               tRNS_colorType == PNG.PNG_COLOR_GRAY);
     }
 
     // Reset all instance variables to their initial state

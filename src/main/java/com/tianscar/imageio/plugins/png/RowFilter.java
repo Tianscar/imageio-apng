@@ -91,7 +91,7 @@ public class RowFilter {
                          int bytesPerPixel) {
 
         // Use type 0 for palette images
-        if (colorType != PNGImageReader.PNG_COLOR_PALETTE) {
+        if (colorType != PNG.PNG_COLOR_PALETTE) {
             System.arraycopy(currRow, bytesPerPixel,
                              scratchRows[0], bytesPerPixel,
                              bytesPerRow);
