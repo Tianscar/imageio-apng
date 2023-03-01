@@ -121,13 +121,13 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
         "GRAY", null, "RGB"
     };
 
-    static final String[] disposalOperatorNames = {
+    static final String[] fcTL_disposalOperatorNames = {
             "none",
             "background",
             "previous"
     };
 
-    static final String[] blendOperatorNames = {
+    static final String[] fcTL_blendOperatorNames = {
             "source",
             "over"
     };
@@ -907,8 +907,8 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
             node.setAttribute("y_offset", Integer.toString(fcTL_height));
             node.setAttribute("delay_num", Integer.toString(fcTL_delay_num));
             node.setAttribute("delay_den", Integer.toString(fcTL_delay_den));
-            node.setAttribute("dispose_op", disposalOperatorNames[fcTL_dispose_op]);
-            node.setAttribute("blend_op", blendOperatorNames[fcTL_blend_op]);
+            node.setAttribute("dispose_op", fcTL_disposalOperatorNames[fcTL_dispose_op]);
+            node.setAttribute("blend_op", fcTL_blendOperatorNames[fcTL_blend_op]);
             root.appendChild(node);
         }
 
@@ -1978,15 +1978,13 @@ public class PNGMetadata extends IIOMetadata implements Cloneable {
                         -1, true,
                         true, 0, 65535);
 
-                fcTL_dispose_op = getIntAttribute(node,
+                fcTL_dispose_op = getEnumeratedAttribute(node,
                         "dispose_op",
-                        -1, true,
-                        true, 0, 255);
+                        fcTL_disposalOperatorNames);
 
-                fcTL_blend_op = getIntAttribute(node,
+                fcTL_blend_op = getEnumeratedAttribute(node,
                         "blend_op",
-                        -1, true,
-                        true, 0, 255);
+                        fcTL_blendOperatorNames);
 
 
             } else if (name.equals("fdAT")) {

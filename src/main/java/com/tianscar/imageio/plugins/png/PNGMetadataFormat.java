@@ -509,7 +509,7 @@ public class PNGMetadataFormat extends IIOMetadataFormatImpl {
         // root -> fcTL
         addElement("fcTL",
                 PNGMetadata.nativeMetadataFormatName,
-                CHILD_POLICY_ALL);
+                CHILD_POLICY_EMPTY);
         addAttribute("fcTL", "sequence_number",
                 DATATYPE_INTEGER, true, null,
                 "0", "2147483647", true, true);
@@ -541,7 +541,7 @@ public class PNGMetadataFormat extends IIOMetadataFormatImpl {
         // root -> fdAT
         addElement("fdAT",
                 PNGMetadata.nativeMetadataFormatName,
-                CHILD_POLICY_ALL);
+                CHILD_POLICY_EMPTY);
         addAttribute("fdAT", "sequence_number",
                 DATATYPE_INTEGER, true, null,
                 "0", "2147483647", true, true);

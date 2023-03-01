@@ -7,4 +7,5 @@ and can be used on Java 8.
 [Examples](/src/test/java/com/tianscar/imageio/plugins/png/test/)
 
 ## License
-[GPLv2+CE](/LICENSE) (c) Tianscar
+[GPLv2+CE](/LICENSE) (c) Tianscar  
+[images for test](/src/test/resources) originally created by [Daniel Calan](https://github.com/DanielCalan), authorized [me](https://github.com/Tianscar) to use. 2023 (c) Daniel Calan all rights reserved.
