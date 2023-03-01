@@ -53,8 +53,8 @@ publishing {
                 url = 'https://github.com/Tianscar/apng-imageio'
                 licenses {
                     license {
-                        name = 'The MIT License'
-                        url = 'https://spdx.org/licenses/MIT.html'
+                        name = 'GNU General Public License, version 2, with the Classpath Exception'
+                        url = 'https://openjdk.org/legal/gplv2+ce.html'
                     }
                 }
                 developers {
