@@ -3,6 +3,23 @@ A patched version of JDK's ImageIO PNG Plug-in, can read and write normal PNG an
 This library also includes [the performance enhancement patch of JDK9's PNG Plug-in](https://bugs.openjdk.java.net/browse/JDK-6488522), 
 and can be used on Java 8.
 
+## Add the library to your project (gradle)
+1. Add the Maven Central repository (if not exist) to your build file:
+```groovy
+repositories {
+    ...
+    mavenCentral()
+}
+```
+
+2. Add the dependency:
+```groovy
+dependencies {
+    ...
+    implementation 'com.tianscar.imageio:apng-imageio:1.0.0'
+}
+```
+
 ## Usage
 [Examples](/src/test/java/com/tianscar/imageio/plugins/png/test/)
 
