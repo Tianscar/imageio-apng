@@ -39,7 +39,7 @@ import javax.imageio.stream.ImageInputStream;
  * addition to the existing API, and it is not yet clear whether these methods
  * are universally useful, so for now we will leave them here.
  */
-public class ReaderUtil {
+final class ReaderUtil {
 
     // Helper for computeUpdatedPixels method
     private static void computeUpdatedPixels(int sourceOffset,

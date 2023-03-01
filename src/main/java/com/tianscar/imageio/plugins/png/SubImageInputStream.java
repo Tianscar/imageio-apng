@@ -29,7 +29,7 @@ import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageInputStreamImpl;
 import java.io.IOException;
 
-public final class SubImageInputStream extends ImageInputStreamImpl {
+final class SubImageInputStream extends ImageInputStreamImpl {
 
     ImageInputStream stream;
     long startingPos;

@@ -25,7 +25,7 @@
 
 package com.tianscar.imageio.plugins.png;
 
-public class RowFilter {
+final class RowFilter {
 
     private static final int abs(int x) {
         return (x < 0) ? -x : x;

@@ -29,7 +29,7 @@ import javax.imageio.stream.ImageInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class InputStreamAdapter extends InputStream {
+final class InputStreamAdapter extends InputStream {
 
     ImageInputStream stream;
 
