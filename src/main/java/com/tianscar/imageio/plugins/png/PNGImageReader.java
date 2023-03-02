@@ -798,14 +798,14 @@ public class PNGImageReader extends ImageReader {
                         parse_fcTL_chunk();
                     }
                     else if (isAnimated && chunkType == fdAT_TYPE) {
-                        int seqNumber = stream.readInt();
+                        int sequenceNumber = stream.readInt();
                         stream.skipBytes(-12);
                         int index = nextImageIndex - 1;
                         if (!frameImageStartPositions.containsKey(index)) {
                             if (!frameMetadata.containsKey(index)) throw new IIOException("Required fcTL chunk missing");
                             PNGMetadata metadata = frameMetadata.get(index);
                             metadata.fdAT_present = true;
-                            metadata.fdAT_sequence_number = seqNumber;
+                            metadata.fdAT_sequence_number = sequenceNumber;
                             frameImageStartPositions.put(index, stream.getStreamPosition());
                         }
                     }
@@ -876,7 +876,7 @@ public class PNGImageReader extends ImageReader {
                     parse_fcTL_chunk();
                     break;
                 case fdAT_TYPE:
-                    int seqNumber = stream.readInt();
+                    int sequenceNumber = stream.readInt();
 
                     /*
                      * The PNG specification mandates that if colorType is
@@ -895,7 +895,7 @@ public class PNGImageReader extends ImageReader {
                         if (!frameMetadata.containsKey(index)) throw new IIOException("Required fcTL chunk missing");
                         PNGMetadata metadata = frameMetadata.get(index);
                         metadata.fdAT_present = true;
-                        metadata.fdAT_sequence_number = seqNumber;
+                        metadata.fdAT_sequence_number = sequenceNumber;
                         frameImageStartPositions.put(index, stream.getStreamPosition() - 12);
                     }
                     // Move to the CRC byte location.

@@ -307,12 +307,12 @@ final class PNGfdATOutputStream extends PNGImageOutputStream {
             (byte)'f', (byte)'d', (byte)'A', (byte)'T'
     };
 
-    public int seqNumber;
-    private final byte[] seqNumberBuf = new byte[4];
+    public int sequenceNumber;
+    private final byte[] sequenceNumberBuf = new byte[4];
 
-    PNGfdATOutputStream(ImageOutputStream stream, int chunkLength, int deflaterLevel, int seqNumber) throws IOException {
+    PNGfdATOutputStream(ImageOutputStream stream, int chunkLength, int deflaterLevel, int sequenceNumber) throws IOException {
         super(stream, chunkLength, deflaterLevel);
-        this.seqNumber = seqNumber;
+        this.sequenceNumber = sequenceNumber;
 
         startChunk();
     }
@@ -326,14 +326,14 @@ final class PNGfdATOutputStream extends PNGImageOutputStream {
         crc.update(chunkType, 0, 4);
         stream.write(chunkType, 0, 4);
 
-        seqNumberBuf[0] = (byte)(seqNumber >>> 24);
-        seqNumberBuf[1] = (byte)(seqNumber >>> 16);
-        seqNumberBuf[2] = (byte)(seqNumber >>>  8);
-        seqNumberBuf[3] = (byte)(seqNumber >>>  0);
+        sequenceNumberBuf[0] = (byte)(sequenceNumber >>> 24);
+        sequenceNumberBuf[1] = (byte)(sequenceNumber >>> 16);
+        sequenceNumberBuf[2] = (byte)(sequenceNumber >>>  8);
+        sequenceNumberBuf[3] = (byte)(sequenceNumber >>>  0);
 
-        crc.update(seqNumberBuf, 0, 4);
-        stream.writeInt(seqNumber);
-        seqNumber ++;
+        crc.update(sequenceNumberBuf, 0, 4);
+        stream.writeInt(sequenceNumber);
+        sequenceNumber ++;
 
         this.bytesRemaining = chunkLength;
     }
@@ -1204,7 +1204,7 @@ public final class PNGImageWriter extends ImageWriter {
             }
         } finally {
             fos.finish();
-            nextSequenceNumber = fos.seqNumber;
+            nextSequenceNumber = fos.sequenceNumber;
         }
     }
 

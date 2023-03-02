@@ -16,7 +16,7 @@ repositories {
 ```groovy
 dependencies {
     ...
-    implementation 'com.tianscar.imageio:apng-imageio:1.0.0'
+    implementation 'com.tianscar.imageio:imageio-apng:1.0.1'
 }
 ```
 

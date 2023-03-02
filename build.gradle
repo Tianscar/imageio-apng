@@ -9,8 +9,8 @@ ext {
     libraryGroupName = 'com.tianscar.imageio'
     libraryVendorName = 'Tianscar'
 
-    libraryVersionCode = 1
-    libraryVersionName = '1.0.0'
+    libraryVersionCode = 2
+    libraryVersionName = '1.0.1'
 
     librarySourceCompatibility = JavaVersion.VERSION_1_8
     libraryTargetCompatibility = JavaVersion.VERSION_1_8
@@ -51,7 +51,7 @@ publishing {
             pom {
                 name = libraryName
                 description = 'Java ImageIO APNG Plug-in'
-                url = 'https://github.com/Tianscar/apng-imageio'
+                url = 'https://github.com/Tianscar/imageio-apng'
                 licenses {
                     license {
                         name = 'GNU General Public License, version 2, with the Classpath Exception'
@@ -66,9 +66,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git@github.com/Tianscar/apng-imageio.git'
-                    developerConnection = 'scm:git:git@github.com/Tianscar/apng-imageio.git'
-                    url = 'https://github.com/Tianscar/apng-imageio'
+                    connection = 'scm:git:git@github.com/Tianscar/imageio-apng.git'
+                    developerConnection = 'scm:git:git@github.com/Tianscar/imageio-apng.git'
+                    url = 'https://github.com/Tianscar/imageio-apng'
                 }
             }
         }
