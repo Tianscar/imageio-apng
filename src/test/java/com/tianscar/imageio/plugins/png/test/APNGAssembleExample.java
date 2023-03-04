@@ -36,7 +36,7 @@ public class APNGAssembleExample {
             param.setCompressionType("Deflate");                        // only `Deflate` supported
             param.setCompressionQuality(1.0f);                          // 1.0 - Best quality
             if (param instanceof PNGImageWriteParam) {
-                ((PNGImageWriteParam) param).setAnimContainsIDAT(false); // true if the animation contains `IDAT` chunk, false otherwise, default true
+                ((PNGImageWriteParam) param).setAnimContainsIDAT(false);// true if the animation contains `IDAT` chunk, false otherwise, default true
             }
 
             writer.prepareWriteSequence(null);
@@ -50,10 +50,10 @@ public class APNGAssembleExample {
             IIOMetadataNode treeToMerge = new IIOMetadataNode(nativeMetadataFormatName);
             // create the metadata tree to merge, the native tree, as standard tree not fully supported
             IIOMetadataNode acTL = new IIOMetadataNode("acTL");
-            acTL.setAttribute("num_plays", "0");                        // infinite play
-            acTL.setAttribute("num_frames", Integer.toString(frames.length)); // must be set before write frames
+            acTL.setAttribute("num_plays", "0");                            // infinite play
+            acTL.setAttribute("num_frames", Integer.toString(frames.length));     // must be set before write frames
             treeToMerge.appendChild(acTL);
-            metadata.mergeTree(nativeMetadataFormatName, treeToMerge);              // merge tree
+            metadata.mergeTree(nativeMetadataFormatName, treeToMerge);                  // merge tree
 
             writer.writeToSequence(new IIOImage(frames[0], null, metadata), param);
             // since the animation do not contain `IDAT` chunk, write `IDAT` separately
@@ -68,11 +68,11 @@ public class APNGAssembleExample {
                 fcTL.setAttribute("sequence_number", "0"); // the value doesn't matter, will automatically set by the writer later
                 fcTL.setAttribute("width", Integer.toString(frame.getWidth()));
                 fcTL.setAttribute("height", Integer.toString(frame.getHeight()));
-                fcTL.setAttribute("x_offset", "0");  // the x offset to the origin
-                fcTL.setAttribute("y_offset", "0");  // the x offset to the origin
+                fcTL.setAttribute("x_offset", "0");        // the x offset to the origin
+                fcTL.setAttribute("y_offset", "0");        // the y offset to the origin
                 // the delay time is in seconds
-                fcTL.setAttribute("delay_num", "2"); // the numerator of the delay time
-                fcTL.setAttribute("delay_den", "1"); // the denominator of the delay time
+                fcTL.setAttribute("delay_num", "2");       // the numerator of the delay time
+                fcTL.setAttribute("delay_den", "1");       // the denominator of the delay time
                 // 2s / 1 = 2s
                 fcTL.setAttribute("dispose_op", "background"); // see PNGMetadata#fcTL_disposalOperatorNames
                 fcTL.setAttribute("blend_op", "source");       // see PNGMetadata#fcTL_blendOperatorNames

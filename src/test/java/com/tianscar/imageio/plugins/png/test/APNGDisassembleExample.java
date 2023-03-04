@@ -19,7 +19,7 @@ public class APNGDisassembleExample {
             ImageReader reader = ImageIO.getImageReadersByFormatName("apng").next(); // get library's apng reader
             //reader = ImageIO.getImageReadersByMIMEType("image/apng").next();       // by mime type
             //reader = ImageIO.getImageReadersBySuffix("apng").next();               // by suffix
-            reader.setInput(iis); // set the output stream
+            reader.setInput(iis); // set the input stream
 
             // more metadata information see https://wiki.mozilla.org/APNG_Specification and http://www.w3.org/TR/PNG/
             // You can also cast PNGMetadata directly!
